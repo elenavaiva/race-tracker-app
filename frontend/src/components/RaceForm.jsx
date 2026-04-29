@@ -32,6 +32,28 @@ export default function RaceForm({ onRaceAdded, editingRace, setEditingRace }) {
     setEditingRace(null);
   };
 
+  const handleCommonDistanceChange = (e) => {
+    const selectedDistance = e.target.value;
+
+    if (selectedDistance === "") {
+      return;
+    }
+
+    if (selectedDistance === "5k") {
+      setDistance("5");
+      setDistanceUnit("km");
+    } else if (selectedDistance === "10k") {
+      setDistance("10");
+      setDistanceUnit("km");
+    } else if (selectedDistance === "half") {
+      setDistance("21");
+      setDistanceUnit("km");
+    } else if (selectedDistance === "marathon") {
+      setDistance("42");
+      setDistanceUnit("km");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -40,8 +62,8 @@ export default function RaceForm({ onRaceAdded, editingRace, setEditingRace }) {
       return;
     }
 
-    if (Number(distance) <= 0) {
-      alert("Distance must be greater than 0");
+    if (Number(distance) < 1) {
+      alert("Distance must be at least 1");
       return;
     }
 
@@ -122,14 +144,22 @@ export default function RaceForm({ onRaceAdded, editingRace, setEditingRace }) {
           required
         />
 
+        <select onChange={handleCommonDistanceChange} defaultValue="">
+          <option value="">Choose common distance</option>
+          <option value="5k">5K</option>
+          <option value="10k">10K</option>
+          <option value="half">Half Marathon</option>
+          <option value="marathon">Marathon</option>
+        </select>
+
         <div className="input-row">
           <input
             type="number"
-            placeholder="Distance *"
+            placeholder="Or type distance manually *"
             value={distance}
             onChange={(e) => setDistance(e.target.value)}
-            min="0.01"
-            step="0.01"
+            min="1"
+            step="1"
             required
           />
 

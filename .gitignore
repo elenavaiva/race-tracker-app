@@ -8,7 +8,7 @@ node_modules/
 backend/.env
 frontend/.env
 
-# system files (Mac)
+# system files 
 .DS_Store
 **/.DS_Store
 

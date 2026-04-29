@@ -139,6 +139,16 @@ body {
   .race-table tr:hover {
     background-color: #faf6f9;
   }
+
+  .details-row {
+    background-color: #faf6f9;
+    text-align: left;
+    padding: 16px;
+  }
+  
+  .details-row p {
+    margin: 6px 0;
+  }
   
 
   .race-table td button {
