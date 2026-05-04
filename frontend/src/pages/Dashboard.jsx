@@ -12,6 +12,8 @@ export default function Dashboard() {
   const [showModal, setShowModal] = useState(false);
   const [raceToDelete, setRaceToDelete] = useState(null);
 
+  const RACE_API_URL = "http://localhost:3000/api/races";
+
   useEffect(() => {
     const user = localStorage.getItem("user");
 
@@ -27,9 +29,7 @@ export default function Dashboard() {
     const user = JSON.parse(localStorage.getItem("user"));
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/races?userId=${user._id}`
-      );
+      const response = await fetch(`${RACE_API_URL}?userId=${user._id}`);
       const data = await response.json();
       setRaces(data);
     } catch (error) {
@@ -47,7 +47,7 @@ export default function Dashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/races/${raceToDelete}?userId=${user._id}`,
+        `${RACE_API_URL}/${raceToDelete}?userId=${user._id}`,
         {
           method: "DELETE",
         }
@@ -79,13 +79,11 @@ export default function Dashboard() {
     <div className="dashboard-container">
       <Header showLogout={true} />
 
-      <div>
-        <RaceForm
-          onRaceAdded={fetchRaces}
-          editingRace={editingRace}
-          setEditingRace={setEditingRace}
-        />
-      </div>
+      <RaceForm
+        onRaceAdded={fetchRaces}
+        editingRace={editingRace}
+        setEditingRace={setEditingRace}
+      />
 
       <RaceList races={races} onDelete={handleDelete} onEdit={handleEdit} />
 

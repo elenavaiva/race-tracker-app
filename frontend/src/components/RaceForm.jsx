@@ -9,6 +9,9 @@ export default function RaceForm({ onRaceAdded, editingRace, setEditingRace }) {
   const [averagePace, setAveragePace] = useState("");
   const [paceUnit, setPaceUnit] = useState("min/km");
 
+  const RACE_API_URL = "http://localhost:3000/api/races";
+  const CONVERTER_API_URL = "http://localhost:3001/convert";
+
   useEffect(() => {
     if (editingRace) {
       setRaceName(editingRace.raceName || "");
@@ -54,6 +57,57 @@ export default function RaceForm({ onRaceAdded, editingRace, setEditingRace }) {
     }
   };
 
+  const convertDistance = async () => {
+    if (!distance) {
+      alert("Enter a distance first");
+      return;
+    }
+
+    let fromUnit;
+    let toUnit;
+
+    if (distanceUnit === "km") {
+      fromUnit = "kilometers";
+      toUnit = "miles";
+    } else {
+      fromUnit = "miles";
+      toUnit = "kilometers";
+    }
+
+    try {
+      const response = await fetch(CONVERTER_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          value: Number(distance),
+          fromUnit: fromUnit,
+          toUnit: toUnit,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "Conversion failed");
+        return;
+      }
+
+      setDistance(data.convertedValue);
+
+      if (distanceUnit === "km") {
+        setDistanceUnit("miles");
+        setPaceUnit("min/mile");
+      } else {
+        setDistanceUnit("km");
+        setPaceUnit("min/km");
+      }
+    } catch (error) {
+      alert("Could not connect to the unit converter microservice");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -73,7 +127,7 @@ export default function RaceForm({ onRaceAdded, editingRace, setEditingRace }) {
       let response;
 
       if (editingRace) {
-        response = await fetch(`http://localhost:3001/api/races/${editingRace._id}`, {
+        response = await fetch(`${RACE_API_URL}/${editingRace._id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -90,7 +144,7 @@ export default function RaceForm({ onRaceAdded, editingRace, setEditingRace }) {
           }),
         });
       } else {
-        response = await fetch("http://localhost:3001/api/races", {
+        response = await fetch(RACE_API_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -159,7 +213,7 @@ export default function RaceForm({ onRaceAdded, editingRace, setEditingRace }) {
             value={distance}
             onChange={(e) => setDistance(e.target.value)}
             min="1"
-            step="1"
+            step="0.01"
             required
           />
 
@@ -171,6 +225,10 @@ export default function RaceForm({ onRaceAdded, editingRace, setEditingRace }) {
             <option value="miles">miles</option>
           </select>
         </div>
+
+        <button type="button" onClick={convertDistance}>
+          Convert Distance
+        </button>
 
         <input
           type="text"
