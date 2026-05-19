@@ -1,20 +1,55 @@
 # Race Tracker
 
-A full-stack web application for tracking running races and personal race results.
+A full-stack web application for tracking running races and fitness activities using a microservice architecture.
+
+---
 
 ## Overview
 
-Race Tracker lets users save and manage their race history in one place. Users can create new race entries, view saved races, update existing entries, and delete races they no longer want to keep.
+Race Tracker allows users to save, manage, and analyze their fitness activities in one place. Users can create activities, view saved races, edit or delete entries, sort activities, view activity statistics, convert units, and automatically categorize activities based on distance.
 
-This project is organized as a separate frontend and backend.
+The project uses a separate frontend, backend, and multiple Flask microservices that communicate through HTTP requests and JSON responses.
+
+---
 
 ## Features
 
-- Add a new race entry
-- View all saved races
+### Main Program Features
+
+- User login and authentication
+- Add a new race or activity
+- View saved races
 - Edit race information
-- Delete a race entry
-- Store race data in a database
+- Delete race entries
+- Expand race details
+- Store activity data in MongoDB
+
+### Integrated Microservices
+
+#### Unit Converter Microservice
+- Converts distance units
+- Example: kilometers ↔ miles
+
+#### Sorting Microservice
+- Sort activities by:
+  - Date
+  - Distance
+
+#### Activity Stats Microservice
+- Calculates:
+  - Total distance
+  - Average distance
+  - Longest activity
+  - Shortest activity
+  - Activity count
+
+#### Activity Label Microservice
+- Categorizes activities as:
+  - Short Activity
+  - Medium Activity
+  - Long Activity
+
+---
 
 ## Tech Stack
 
@@ -32,9 +67,125 @@ This project is organized as a separate frontend and backend.
 - MongoDB
 - Mongoose
 
+### Microservices
+- Python
+- Flask
+- Flask-CORS
+
+---
+
+## Microservice Communication
+
+The Main Program communicates with each microservice through HTTP requests using `fetch()` and JSON request/response data.
+
+Each microservice runs independently in a separate process.
+
+| Service | Port |
+|---|---|
+| Main Program Backend | 3000 |
+| Unit Converter | 3001 |
+| Sorting Service | 3002 |
+| Activity Stats Service | 3003 |
+| Activity Label Service | 3004 |
+
+---
+
 ## Project Structure
 
 ```text
-cs361-main-program/
+race-tracker/
 ├── backend/
-└── frontend/
+├── frontend/
+├── images/
+└── README.md
+```
+
+---
+
+## Screenshots
+
+### Dashboard
+
+Add screenshot here:
+
+```md
+![Dashboard](images/dashboard.png)
+```
+
+### Activity Statistics
+
+```md
+![Stats](images/stats.png)
+```
+
+### Login Page
+
+```md
+![Login](images/login.png)
+```
+
+---
+
+## Running the Project
+
+### 1. Start the Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Runs on:
+
+```text
+http://localhost:5173
+```
+
+---
+
+### 2. Start the Backend
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+Runs on:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## Microservice Repositories
+
+Each microservice is maintained in its own repository and must be started separately.
+
+### Unit Converter Microservice
+Repository:
+```text
+https://github.com/elenavaiva/unit-converter
+```
+
+### Sorting Microservice
+Repository:
+```text
+https://github.com/elenavaiva/sorting-microservice
+```
+
+### Activity Stats Microservice
+Repository:
+```text
+https://github.com/elenavaiva/activity-stats-microservice
+```
+
+### Activity Label Microservice
+Repository:
+```text
+https://github.com/elenavaiva/activity-label-service
+```
+
+---
