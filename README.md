@@ -106,23 +106,15 @@ race-tracker/
 
 ### Dashboard
 
-Add screenshot here:
-
-```md
 ![Dashboard](images/dashboard.png)
-```
 
 ### Activity Statistics
 
-```md
 ![Stats](images/stats.png)
-```
 
 ### Login Page
 
-```md
 ![Login](images/login.png)
-```
 
 ---
 
